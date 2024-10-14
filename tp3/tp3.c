@@ -50,13 +50,27 @@ void elimina_invalidos(struct racional *v_ptr[], int *n){
 
 /* Ordena um vetor de racionais de maneira crescente */
 /* Utiliza o algoritmo de bubble sort  */
-void ordena_vetor(struct racional *v_ptr, int n){
+void ordena_vetor(struct racional *v_ptr[], int n){
 
+	struct racional *ptr_aux;
 	int i, j;
 	for(i = n-1; i > 0; i--)
 		for(j = 0; j < i; j++)
-			if((compara_r(v_ptr[j], v_ptr[j+1])) == 1)
-				printf("bolsonaro");
+			if((compara_r(v_ptr[j], v_ptr[j+1])) == 1){
+				ptr_aux = v_ptr[j];
+				v_ptr[j] = v_ptr[j+1];
+				v_ptr[j+1] = ptr_aux;
+			}
+	ptr_aux = NULL;
+}
+
+void soma_vetor(struct racional *v_ptr[], int n, struct racional *soma){
+	
+	int i;
+	(*soma).num = 0;
+	(*soma).den = 1;
+	for(i = 0; i < n; i++)
+		soma_r(soma, v_ptr[i], soma);
 }
 
 void libera_memoria(struct racional **v_ptr, int n){
@@ -72,7 +86,7 @@ void libera_memoria(struct racional **v_ptr, int n){
 int main (){
 
 	struct racional **v_ptr;
-
+	struct racional soma;
 	int n;
 	scanf("%d", &n);
 
@@ -87,6 +101,15 @@ int main (){
 
 	printf("VETOR = ");
 	imprime_vetor(v_ptr, n);
+	
+	ordena_vetor(v_ptr, n);
+	
+	printf("VETOR = ");
+	imprime_vetor(v_ptr, n);
+	
+	soma_vetor(v_ptr, n, &soma);
+	printf("SOMA = ");
+	imprime_r(&soma);
 
 	libera_memoria(v_ptr, n);
 	free(v_ptr);

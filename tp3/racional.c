@@ -27,9 +27,9 @@ int valido_r(struct racional *r){
 	return 1;
 }
 
-/* Minimo Multiplo Comum entre a e b */
-/* mmc = (a * b) / mdc (a, b)        */
-long mmc (long a, long b){
+/* Calcula o Maximo Divisor Comum entre a e b */
+/* Utiliza o metodo de Euclides */
+long mdc (long a, long b){
 	
 	long resto;
 
@@ -41,6 +41,12 @@ long mmc (long a, long b){
 	return labs(a); /* retorna o valor absoluto de a */
 }				    /* para evitar modificar o sinal dos racionais  */
 
+/* Calcula o Minimo Multiplo Comum entre a e b */
+long mmc (long a, long b){
+
+	return (a * b) / mdc(a, b);
+}
+
 /* Simplifica o número racional indicado no parâmetro.
  * Por exemplo, se o número for 10/8 muda para 5/4.
  * Retorna 1 em sucesso e 0 se r for inválido ou o ponteiro for nulo.
@@ -48,17 +54,17 @@ long mmc (long a, long b){
  * Se o denominador for negativo, o sinal deve migrar para o numerador. */
 int simplifica_r (struct racional *r){
 	
-	long MMC;
+	long MDC;
 
 	if(r == NULL || !valido_r(r))
 		return 0;
 	
-	MMC = mmc((*r).num, (*r).den);
+	MDC = mdc((*r).num, (*r).den);
 
-	if(MMC != 1){ /* se MMC = 1, ja esta simplificado! */
+	if(MDC != 1){ /* se MMC = 1, ja esta simplificado! */
 
-		(*r).num = (*r).num / MMC;
-		(*r).den = (*r).den / MMC;
+		(*r).num = (*r).num / MDC;
+		(*r).den = (*r).den / MDC;
 	}
 
 	if((*r).den < 0){
@@ -130,12 +136,55 @@ int compara_r (struct racional *r1, struct racional *r2){
 	return 0;
 }
 
-/* Maximo Divisor Comum entre a e b      */
-/* calcula o mdc pelo metodo de Euclides */
-long mdc (long a, long b)
-{
-  /* implemente aqui */
+
+int soma_r (struct racional *r1, struct racional *r2, struct racional *r3){
+	
+	long MMC;
+
+	if(!valido_r(r1) || !valido_r(r2) || r3 == NULL)
+		return 0;
+
+	MMC = mmc((*r1).den, (*r2).den);
+	(*r3).den = MMC;
+	(*r3).num = ((MMC / (*r1).den) * (*r1).num) + ((MMC / (*r2).den) * (*r2).num);
+	simplifica_r(r3);
+	return 1;
 }
 
+int subtrai_r (struct racional *r1, struct racional *r2, struct racional *r3){
+	
+	long MMC;
 
-/* implemente as demais funções de racional.h aqui */
+	if(!valido_r(r1) || !valido_r(r2) || r3 == NULL)
+		return 0;
+	
+	MMC = mmc((*r1).den, (*r2).den);
+	(*r3).den = MMC;
+	(*r3).num = ((MMC / (*r1).den) * (*r1).num) + ((MMC / (*r2).den) * (*r2).num);
+	simplifica_r(r3);
+	return 1;
+
+}
+
+int multiplica_r (struct racional *r1, struct racional *r2, struct racional *r3){
+	
+	if(!valido_r(r1) || !valido_r(r2) || r3 == NULL)
+		return 0;
+	
+	(*r3).num = (*r1).num * (*r2).num;  
+	(*r3).den = (*r1).den * (*r2).den;  
+	simplifica_r(r3);
+	return 1;
+}
+
+int divide_r (struct racional *r1, struct racional *r2, struct racional *r3){
+
+	/* o ultimo teste evita divisoes por zero */	
+	if(!valido_r(r1) || !valido_r(r2) || r3 == NULL || (*r2).num == 0)
+		return 0;
+	
+	(*r3).num = (*r1).num * (*r2).den;  
+	(*r3).den = (*r1).den * (*r2).num;  
+	simplifica_r(r3);
+	return 1;
+}
