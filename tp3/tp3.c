@@ -73,11 +73,11 @@ void soma_vetor(struct racional *v_ptr[], int n, struct racional *soma){
 		soma_r(soma, v_ptr[i], soma);
 }
 
-void libera_memoria(struct racional **v_ptr, int n){
+void libera_racionais(struct racional **v_ptr, int n){
 	
 	int i;
 	for(i = 0; i < n; i++){
-		free(v_ptr[i]);
+		destroi_r(v_ptr[i]);
 		v_ptr[i] = NULL;
 	}
 }
@@ -110,10 +110,16 @@ int main (){
 	soma_vetor(v_ptr, n, &soma);
 	printf("SOMA = ");
 	imprime_r(&soma);
+	printf("\n");
 
-	libera_memoria(v_ptr, n);
+	libera_racionais(v_ptr, n);	
+
+	printf("VETOR = ");
+	imprime_vetor(v_ptr, n);
+
 	free(v_ptr);
 	v_ptr = NULL;
+	printf("\n");
 	return (0) ;
 }
 
