@@ -38,8 +38,8 @@ void elimina_invalidos(struct racional *v_ptr[], int *n){
 
 	while(i < *n){
 		if(!valido_r(v_ptr[i])){
-			destroi_r(v_ptr[i]);
-			v_ptr[i] = v_ptr[(*n)-1];
+			*v_ptr[i] = *v_ptr[(*n)-1];
+			destroi_r(v_ptr[(*n)-1]);
 			v_ptr[(*n)-1] = NULL;
 			(*n)--;
 		} else {
@@ -67,13 +67,13 @@ void ordena_vetor(struct racional *v_ptr[], int n){
 void soma_vetor(struct racional *v_ptr[], int n, struct racional *soma){
 	
 	int i;
-	(*soma).num = 0;
-	(*soma).den = 1;
+	soma->num = 0;
+	soma->den = 1;
 	for(i = 0; i < n; i++)
-		soma_r(soma, v_ptr[i], soma);
+		soma_r(soma, v_ptr[i], soma);	
 }
 
-void libera_racionais(struct racional **v_ptr, int n){
+void libera_racionais(struct racional *v_ptr[], int n){
 	
 	int i;
 	for(i = 0; i < n; i++){

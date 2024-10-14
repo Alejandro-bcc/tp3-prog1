@@ -21,7 +21,7 @@
 
 int valido_r(struct racional *r){
 
-	if(r == NULL || (*r).den == 0)
+	if(r == NULL || r->den == 0)
 		return 0;
 
 	return 1;
@@ -136,7 +136,6 @@ int compara_r (struct racional *r1, struct racional *r2){
 	return 0;
 }
 
-
 int soma_r (struct racional *r1, struct racional *r2, struct racional *r3){
 	
 	long MMC;
@@ -144,9 +143,9 @@ int soma_r (struct racional *r1, struct racional *r2, struct racional *r3){
 	if(!valido_r(r1) || !valido_r(r2) || r3 == NULL)
 		return 0;
 
-	MMC = mmc((*r1).den, (*r2).den);
-	(*r3).den = MMC;
-	(*r3).num = ((MMC / (*r1).den) * (*r1).num) + ((MMC / (*r2).den) * (*r2).num);
+	MMC = mmc(r1->den, r2->den);
+	r3->num = ((MMC / r1->den) * r1->num) + ((MMC / r2->den) * r2->num);
+	r3->den = MMC;
 	simplifica_r(r3);
 	return 1;
 }
@@ -157,13 +156,12 @@ int subtrai_r (struct racional *r1, struct racional *r2, struct racional *r3){
 
 	if(!valido_r(r1) || !valido_r(r2) || r3 == NULL)
 		return 0;
-	
-	MMC = mmc((*r1).den, (*r2).den);
-	(*r3).den = MMC;
-	(*r3).num = ((MMC / (*r1).den) * (*r1).num) + ((MMC / (*r2).den) * (*r2).num);
+
+	MMC = mmc(r1->den, r2->den);
+	r3->num = ((MMC / r1->den) * r1->num) - ((MMC / r2->den) * r2->num);
+	r3->den = MMC;
 	simplifica_r(r3);
 	return 1;
-
 }
 
 int multiplica_r (struct racional *r1, struct racional *r2, struct racional *r3){
@@ -171,8 +169,8 @@ int multiplica_r (struct racional *r1, struct racional *r2, struct racional *r3)
 	if(!valido_r(r1) || !valido_r(r2) || r3 == NULL)
 		return 0;
 	
-	(*r3).num = (*r1).num * (*r2).num;  
-	(*r3).den = (*r1).den * (*r2).den;  
+	r3->num = r1->num * r2->num;  
+	r3->den = r1->den * r2->den;  
 	simplifica_r(r3);
 	return 1;
 }
