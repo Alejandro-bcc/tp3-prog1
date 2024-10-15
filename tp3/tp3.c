@@ -2,12 +2,16 @@
  * Tipos Abstratos de Dados - TADs
  * Arquivo do programa principal, que usa o TAD racional.
  * Feito em 24/09/2024 para a disciplina CI1001 - Programação 1.
+ * Pelo aluno Alejandro David Nava Nava 
+ * GRR: 20242778.
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "racional.h"
 
+
+/* prenche um vetor de ponteiros para racionais de tamanho n */
 void prenche_vetor(struct racional *v_ptr[], int n){
 	
 	long num, den;
@@ -20,6 +24,7 @@ void prenche_vetor(struct racional *v_ptr[], int n){
 	}
 }
 
+/* imprime um vetor de ponteiros para racionais */
 void imprime_vetor(struct racional *v_ptr[], int n){
 
 	int i;
@@ -32,6 +37,7 @@ void imprime_vetor(struct racional *v_ptr[], int n){
 	printf("\n");
 }
 
+/* elimina todos os elementos invalidos apontados pelos ponteiros do vetor */
 void elimina_invalidos(struct racional *v_ptr[], int *n){
 	
 	int i;
@@ -49,7 +55,7 @@ void elimina_invalidos(struct racional *v_ptr[], int *n){
 	}
 }
 
-/* Ordena um vetor de racionais de maneira crescente */
+/* Ordena maneira crescente os racionais apontados pelos ponteiros do vetor */
 /* Utiliza o algoritmo de bubble sort  */
 void ordena_vetor(struct racional *v_ptr[], int n){
 
@@ -65,13 +71,17 @@ void ordena_vetor(struct racional *v_ptr[], int n){
 	ptr_aux = NULL;
 }
 
-void soma_vetor(struct racional *v_ptr[], int n, struct racional *soma){
+/* soma todos os racionais apontados pelos ponteiros do vetor */
+void soma_vetor(struct racional *v_ptr[], int n, struct racional **soma){
 	
 	int i;
+	*soma = cria_r(0, 1);
 	for(i = 0; i < n; i++)
-		soma_r(soma, v_ptr[i], soma);	
+		soma_r(*soma, v_ptr[i], *soma);	
 }
 
+/* libera a memoria utilizada para alocar os racionais */
+/* e aterra seus respectivos ponteiros */
 void libera_racionais(struct racional *v_ptr[], int n){
 	
 	int i;
@@ -106,9 +116,8 @@ int main (){
 	printf("VETOR = ");
 	imprime_vetor(v_ptr, n);
 	
-	soma = cria_r(0, 1);
-	soma_vetor(v_ptr, n, soma);
-	printf("SOMA = ");
+	soma_vetor(v_ptr, n, &soma); /* o ponteiro soma eh inicializado */
+	printf("SOMA = ");			 /* na funcao soma_vetor */
 	imprime_r(soma);
 	printf("\n");
 
