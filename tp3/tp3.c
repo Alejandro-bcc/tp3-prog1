@@ -26,9 +26,10 @@ void imprime_vetor(struct racional *v_ptr[], int n){
 
 	for(i = 0; i < n; i++){
 		imprime_r(v_ptr[i]);
-		printf(" ");
+		if(i < n-1)
+			printf(" ");
 	}
-	printf("\b\n");
+	printf("\n");
 }
 
 void elimina_invalidos(struct racional *v_ptr[], int *n){
@@ -67,8 +68,6 @@ void ordena_vetor(struct racional *v_ptr[], int n){
 void soma_vetor(struct racional *v_ptr[], int n, struct racional *soma){
 	
 	int i;
-	soma->num = 0;
-	soma->den = 1;
 	for(i = 0; i < n; i++)
 		soma_r(soma, v_ptr[i], soma);	
 }
@@ -86,7 +85,7 @@ void libera_racionais(struct racional *v_ptr[], int n){
 int main (){
 
 	struct racional **v_ptr;
-	struct racional soma;
+	struct racional *soma;
 	int n;
 	scanf("%d", &n);
 
@@ -107,9 +106,10 @@ int main (){
 	printf("VETOR = ");
 	imprime_vetor(v_ptr, n);
 	
-	soma_vetor(v_ptr, n, &soma);
+	soma = cria_r(0, 1);
+	soma_vetor(v_ptr, n, soma);
 	printf("SOMA = ");
-	imprime_r(&soma);
+	imprime_r(soma);
 	printf("\n");
 
 	libera_racionais(v_ptr, n);	
@@ -119,7 +119,10 @@ int main (){
 
 	free(v_ptr);
 	v_ptr = NULL;
-	printf("\n");
+
+	free(soma);
+	soma = NULL;
+
 	return (0) ;
 }
 
